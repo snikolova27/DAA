@@ -13,11 +13,11 @@ struct Date
     Date(){}
     Date(const int day, const int month, const int year, const int idx) : day(day), month(month), year(year) , idx(idx){}
 
-    bool operator <= (const Date& other)
+    bool operator < (const Date& other)
     {
         return  (this->year == other.year && this->day == other.day && this->month == other.month && this->idx < other.idx) // same date, different idx
                 || (this->year < other.year) 
-                || (this->month < other.month && this->year < other.year) 
+                || (this->month < other.month && this->year == other.year) 
                 || (this->day < other.day && this->month == other.month && this->year == other.year) 
                 || (this->day == other.day && this->month < other.month && this->year == other.year) 
                 || (this->day == other.day && this->month == other.month && this->year < other.year);
@@ -31,7 +31,7 @@ int charToInt(char ch)
 }
 
 // read a date from a string, assuming the input is correct always
-Date getDate(const std::string& str)
+Date getDate(const std::string& str, int idx)
 {
     Date res;
     int day, month, year;
@@ -41,6 +41,7 @@ Date getDate(const std::string& str)
     res.day = day;
     res.month = month;
     res.year = year;
+    res.idx = idx;
 
     return res;
 }
@@ -52,7 +53,7 @@ int minFrom(std::vector<Date>& dates, int from, int to)
     int min = from;
     for(int  i = from + 1; i < to; i++)
     {
-        if(dates[i] <= minD)
+        if(dates[i] < minD)
         {
             min = i;
             minD = dates[i];
@@ -100,8 +101,7 @@ int main()
     for(int i  = 0 ; i < n; i++)
     {
         std::cin >> current;
-        Date currentD = getDate(current);
-        currentD.idx = i+1;
+        Date currentD = getDate(current, i+1);
         dates.push_back(currentD);
     }
 
