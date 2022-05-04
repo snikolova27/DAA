@@ -1,0 +1,96 @@
+/* Дийкстра работи за ориентиран и неориентиран граф
+ не работи с отрицателни стойности на ребрата
+ СД -> в нея записваме двойка върхове, първото число ще е най-краткият път от стартовия връх до този node,второто - въпросния node
+ в СД - елементите са сортирани по първия аргумент(по дължина на пътя)
+
+startNode
+ path[node] -> най-краткият път до момента от стартовия връх
+ първоначално слагаме upper_bound за всички, не може -1(чупи алгоритъма)
+ оптимизирано bfs
+
+ при всяко достигане на връх -> path [node] = min(path[node-1] + реброто между node и node-1, path[node])
+ добавяме в СД само когато сме намерили нов минимален път до определен връх
+
+ приоритетна опашка - само вадим най-горния елемент
+ optimal
+ [startNode] = 0
+ добавяме го
+ while()
+ {
+     махаме topNode
+ }
+ bfs -> opt->spis.push
+ може и със сет
+ */
+
+
+//версия за ориентирани графи
+#include <iostream>
+#include <queue>
+#include <vector>
+#define PA pair<int,int>;
+using namespace std;
+const int infinity = 100000;
+struct Edge
+{
+    int to;
+    int weight;
+};
+
+vector<Edge> graph[100];
+int n,m;
+int startNode, finishNode;
+priority_queue< pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> que;
+
+int path[100];
+
+void input()
+{
+    scanf("%d%d",&n, &m);
+    int from;
+    Edge temp;
+    for(int i = 0; i < m; i++)
+    {
+        scanf("%d%d%d", &from, &temp.to, &temp.weight);
+        graph[from].push_back(temp);
+    }
+    scanf("%d%d", &startNode, &finishNode);
+}
+
+void nullify()
+{
+    fill(path, path + n, infinity);
+    while(!que.empty())
+    {
+        que.pop();
+    }
+}
+
+void shortestPath(int start, int finish)
+{
+    // инициализираме всички стойности с безкрайност(зануляване)
+    nullify();
+    path[start] = 0;
+    que.push({0, start});
+    while(!que.empty())
+    {
+        int node = que.top().second; // node
+        que.pop();
+        for(int i = 0;i < graph[node].size(); i++)
+        {
+            Edge temp = graph[node][i];
+            if(path[node] + temp.weight < path[temp.to])
+            {
+                path[temp.to] = temp.weight + path[node];
+                que.push({path[temp.to], temp.to});
+            }
+        }
+    }
+}
+
+int main()
+{
+    input();
+    shortestPath(startNode, finishNode);
+    return 0;
+}
