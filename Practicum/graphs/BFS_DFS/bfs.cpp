@@ -19,6 +19,7 @@ bool bfs(int start, int finish)
     {
         currentNode = queue.front();
         queue.pop();
+        
         for(int i = 0; i <graph[currentNode].size(); i++)
         {
             if(!visited[graph[currentNode][i]])

@@ -2,7 +2,7 @@
 #include <vector>
 const int MAX_VERTEX_COUNT = 100;
 
-struct Node
+struct Edge
 {
     int to;
     int weight;
@@ -15,8 +15,8 @@ std::vector<int> undirecredGraph[MAX_VERTEX_COUNT];
 bool matrixGraph[MAX_VERTEX_COUNT][MAX_VERTEX_COUNT];
 int matrixWeightedGraph[MAX_VERTEX_COUNT][MAX_VERTEX_COUNT];
 
-std::vector<Node> weightedGraph[MAX_VERTEX_COUNT];
-Node temp;
+std::vector<Edge> weightedGraph[MAX_VERTEX_COUNT];
+Edge temp;
 
 int vertexCnt, edgesCnt;
 
